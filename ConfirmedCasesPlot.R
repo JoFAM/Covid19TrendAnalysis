@@ -83,4 +83,4 @@ delaytab <-tableGrob(t(delays[,c('Country','delay')]),
 # Save the figure
 if(!dir.exists("Fig")) dir.create("Fig")
 fname <- paste0("TrendConfirmed",Sys.Date(),".png")
-ggsave(file.path("Fig",fname), width = 6, height = 8)
+ggsave(file.path("Fig",fname), width = 8, height = 8)
