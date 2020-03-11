@@ -1,5 +1,5 @@
 #------------------------------------
-# Create a gif showing how things evolved
+# Create a plot showing trend of confirmed cases
 # Author: Joris Meys
 # date last modified: 2020-03-10
 #------------------------------------
@@ -56,12 +56,12 @@ pdelay <- ggplot(plotdata, aes(x = as.numeric((date - delay) - ItalyStart),
             stat = "smooth",
             method = "loess",
             size = 1) +
-  scale_y_log10() +
   scale_color_viridis_d(option= "magma") +
   labs(x = "Days since 100 patients reached",
-       y = "Confirmed (log)",
-       title = "loess smoothed trend in total confirmed ") +
+       y = "Confirmed (log)") +
   guides(color = FALSE)
+
+pdelaylog <- pdelay + scale_y_log10()
 
 # The table
 delaytab <-tableGrob(t(delays[,c('Country','delay')]),
@@ -69,8 +69,8 @@ delaytab <-tableGrob(t(delays[,c('Country','delay')]),
                      theme = ttheme_minimal(base_size = 10))
 
 # Construct the patchwork
-(plin + plog)  /
-  pdelay / wrap_elements(delaytab) + 
+(plin | plog)  /
+  (pdelay | pdelaylog) / wrap_elements(delaytab) + 
   ggtitle("Difference with Italy in day of reaching 100 patients") +
   plot_layout(guides = 'collect',
               heights = c(2,2,1)) +
