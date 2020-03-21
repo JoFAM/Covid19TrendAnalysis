@@ -69,7 +69,12 @@ for(i in which(id)){
     filter(Country.Region %in% countries) %>%
     mutate(date = days[i]) %>%
     select(date, Confirmed, Deaths, Recovered,
-           Country = Country.Region)
+           Country = Country.Region) %>%
+    group_by(Country, date) %>%
+    summarise_all(sum) %>%
+    ungroup() %>%
+    select(date, Confirmed, Deaths, Recovered, Country)
+
   write.table(tmp,
             fprocessed,
             row.names = FALSE,
